@@ -6,7 +6,7 @@ public class BookAPIException extends RuntimeException {
     private HttpStatus status;
     private String message;
 
-    public BookAPIException(HttpStatus status, String message) {
+    public BookAPIException(String message, HttpStatus status) {
         this.status = status;
         this.message = message;
     }

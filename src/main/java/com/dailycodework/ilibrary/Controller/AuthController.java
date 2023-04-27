@@ -1,6 +1,7 @@
 package com.dailycodework.ilibrary.Controller;
 
 import com.dailycodework.ilibrary.Dtos.LoginDto;
+import com.dailycodework.ilibrary.Dtos.RegisterDto;
 import com.dailycodework.ilibrary.Service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,11 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
         String response = authService.login(loginDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
+        String response = authService.register(registerDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
