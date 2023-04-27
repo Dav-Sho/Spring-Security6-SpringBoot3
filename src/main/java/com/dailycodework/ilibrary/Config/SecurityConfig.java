@@ -1,5 +1,6 @@
 package com.dailycodework.ilibrary.Config;
 
+import com.dailycodework.ilibrary.Security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
+
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -37,9 +39,10 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll().anyRequest().authenticated();
-//            authorize.anyRequest().authenticated();
-        }).httpBasic(Customizer.withDefaults());
+            authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .anyRequest().authenticated();
+        });
         return http.build();
     }
 
