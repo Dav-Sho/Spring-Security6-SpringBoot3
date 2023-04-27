@@ -1,11 +1,13 @@
 package com.dailycodework.ilibrary.Service.ServiceImpl;
 
+import com.dailycodework.ilibrary.Dtos.JwtAuthResponse;
 import com.dailycodework.ilibrary.Dtos.LoginDto;
 import com.dailycodework.ilibrary.Dtos.RegisterDto;
 import com.dailycodework.ilibrary.Entity.Role;
 import com.dailycodework.ilibrary.Entity.User;
 import com.dailycodework.ilibrary.Repository.RoleRepository;
 import com.dailycodework.ilibrary.Repository.UserRepository;
+import com.dailycodework.ilibrary.Security.JwtTokenProvider;
 import com.dailycodework.ilibrary.Service.AuthService;
 import com.dailycodework.ilibrary.exception.BookAPIException;
 import org.springframework.http.HttpStatus;
@@ -23,11 +25,13 @@ public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -36,7 +40,9 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User logged in successfully";
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return token;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.dailycodework.ilibrary.Controller;
 
+import com.dailycodework.ilibrary.Dtos.JwtAuthResponse;
 import com.dailycodework.ilibrary.Dtos.LoginDto;
 import com.dailycodework.ilibrary.Dtos.RegisterDto;
 import com.dailycodework.ilibrary.Service.AuthService;
@@ -21,9 +22,11 @@ public class AuthController {
 
 //    Login User;
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
         String response = authService.login(loginDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(response);
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
     @PostMapping("/register")
